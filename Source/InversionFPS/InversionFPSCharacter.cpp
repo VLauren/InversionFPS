@@ -1,5 +1,8 @@
 // Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
 
+#include "References.h"
+#include "EngineUtils.h"
+#include "Runtime/CoreUObject/Public/UObject/UObjectIterator.h"
 #include "InversionFPSCharacter.h"
 #include "InversionFPSProjectile.h"
 #include "Animation/AnimInstance.h"
@@ -139,6 +142,20 @@ void AInversionFPSCharacter::SetupPlayerInputComponent(class UInputComponent* Pl
 
 void AInversionFPSCharacter::OnFire()
 {
+	if (AReferences::Instance->MatBlack != nullptr && AReferences::Instance->MatWhite != nullptr)
+	{
+		for (TObjectIterator<UMeshComponent> Itr; Itr; ++Itr)
+		{
+			if (Itr->GetMaterial(0) == AReferences::Instance->MatWhite)
+				Itr->SetMaterial(0, AReferences::Instance->MatBlack);
+			else if (Itr->GetMaterial(0) == AReferences::Instance->MatBlack)
+				Itr->SetMaterial(0, AReferences::Instance->MatWhite);
+		}
+	}
+
+	// ===================================================
+	return;
+
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
 	{
