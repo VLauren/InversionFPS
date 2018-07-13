@@ -1,9 +1,9 @@
 // Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
 
+#include "InversionFPSCharacter.h"
 #include "References.h"
 #include "EngineUtils.h"
 #include "Runtime/CoreUObject/Public/UObject/UObjectIterator.h"
-#include "InversionFPSCharacter.h"
 #include "InversionFPSProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
