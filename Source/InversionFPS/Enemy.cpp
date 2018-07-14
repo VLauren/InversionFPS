@@ -1,11 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Enemy.h"
+#include "EnemyProjectile.h"
 #include "Runtime/Engine/Public/EngineUtils.h"
 
 const float AEnemy::MOVEMENT_SPEED = 200.0f;
 const float AEnemy::DISTANCE_TO_START = 1700.0f;
-const float AEnemy::MOVE_TIME = 2;
+const float AEnemy::MOVE_TIME = 1;
 
 // Sets default values
 AEnemy::AEnemy()
@@ -69,8 +70,17 @@ void AEnemy::Tick(float DeltaTime)
 	}
 	else if (EnemyState == EEnemyState::AIM)
 	{
+		if (!shoot && timeCounter >= 0.5f)
+		{
+			GenerateShoot(GetActorLocation(), GetActorRotation());
+			GenerateShoot(GetActorLocation(), GetActorRotation().Add(0, 15, 0));
+			GenerateShoot(GetActorLocation(), GetActorRotation().Add(0, -15, 0));
+			shoot = true;
+		}
+
 		if (timeCounter >= MOVE_TIME)
 		{
+			shoot = false;
 			timeCounter = 0;
 			int32 r = FMath::RandRange(0, 2);
 
@@ -88,11 +98,17 @@ void AEnemy::Tick(float DeltaTime)
 		{
 			timeCounter = 0;
 			EnemyState = EEnemyState::AIM;
-
-			UE_LOG(LogTemp, Warning, TEXT("DISPARO"));
 		}
 	}
-
 }
 
-
+void AEnemy::GenerateShoot(FVector Location, FRotator Rotation)
+{
+	UWorld* const World = GetWorld();
+	if (World != NULL && Projectile != NULL)
+	{
+		World->SpawnActor<AEnemyProjectile>(Projectile, Location, Rotation);
+	}
+	else
+		UE_LOG(LogTemp, Warning, TEXT("Proyectil sin asignar en el blueprint del enemigo"));
+}

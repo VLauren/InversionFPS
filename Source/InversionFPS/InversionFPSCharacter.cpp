@@ -321,3 +321,12 @@ bool AInversionFPSCharacter::EnableTouchscreenMovement(class UInputComponent* Pl
 	
 	return false;
 }
+
+void AInversionFPSCharacter::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+{
+	if (OtherComp != nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ALGO! %s"), *OtherComp->GetOwner()->GetName());
+
+	}
+}

@@ -40,11 +40,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void GenerateShoot(FVector Location, FRotator Rotation);
+
+	/** Projectile class to spawn */
+	UPROPERTY(EditDefaultsOnly, Category = EnemyConfig)
+		TSubclassOf<class AActor> Projectile;
+
 	UPROPERTY(VisibleAnywhere)
 		USkeletalMeshComponent* Mesh = nullptr;
 	
 	UPROPERTY(VisibleAnywhere)
 		class UEnemyMovement* Movement;
+
+	UPROPERTY(EditDefaultsOnly, Category = EnemyConfig)
+		bool Black;
 	
 	EEnemyState EnemyState;
 
@@ -55,4 +64,6 @@ public:
 	float timeCounter;
 
 	AInversionFPSCharacter* Player;
+
+	bool shoot;
 };
