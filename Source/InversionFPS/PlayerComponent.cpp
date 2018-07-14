@@ -47,10 +47,10 @@ void UPlayerComponent::OnFire()
 		const FRotator SpawnRotation = ((APawn*)GetOwner())->GetControlRotation();
 		const FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
 
-		// if (Black)
-			// World->SpawnActor<APlayerProjectile>(ProjectileBlack, SpawnLocation, SpawnRotation);
-		// else
-			// World->SpawnActor<APlayerProjectile>(ProjectileWhite, SpawnLocation, SpawnRotation);
+		if (Black)
+			World->SpawnActor<APlayerProjectile>(ProjectileBlack, SpawnLocation, SpawnRotation);
+		else
+			World->SpawnActor<APlayerProjectile>(ProjectileWhite, SpawnLocation, SpawnRotation);
 	}
 	else
 		UE_LOG(LogTemp, Warning, TEXT("Proyectil sin asignar en el blueprint del jugador"));
