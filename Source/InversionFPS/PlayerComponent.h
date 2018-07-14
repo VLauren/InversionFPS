@@ -27,13 +27,18 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
-		TSubclassOf<class AActor> Projectile;
+		TSubclassOf<class AActor> ProjectileBlack = nullptr;
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+		TSubclassOf<class AActor> ProjectileWhite = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
 		FVector GunOffset;
 
 	void OnFire();
 	void OnInvert();
-		
+
+	static bool Black;
+
+	static UPlayerComponent* Instance;
 	
 };

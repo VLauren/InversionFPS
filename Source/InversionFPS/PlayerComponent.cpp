@@ -6,6 +6,9 @@
 #include "Runtime/Engine/Classes/GameFramework/Pawn.h"
 #include "PlayerProjectile.h"
 
+bool UPlayerComponent::Black = false;
+UPlayerComponent* UPlayerComponent::Instance = nullptr;
+
 UPlayerComponent::UPlayerComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -16,6 +19,9 @@ UPlayerComponent::UPlayerComponent()
 void UPlayerComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Instance = this;
+
 	AActor* Owner = GetOwner();
 	UInputComponent* InputComponent = Owner->InputComponent;
 	if (InputComponent != NULL)
@@ -34,15 +40,17 @@ void UPlayerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UPlayerComponent::OnFire()
 {
 	UWorld* const World = GetWorld();
-	if (World != NULL && Projectile != NULL)
+	if (World != NULL && ProjectileBlack != nullptr && ProjectileWhite != nullptr)
 	{
 		// World->SpawnActor<APlayerProjectile>(Projectile, GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation());
 
 		const FRotator SpawnRotation = ((APawn*)GetOwner())->GetControlRotation();
 		const FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
 
-		// spawn the projectile at the muzzle
-		World->SpawnActor<APlayerProjectile>(Projectile, SpawnLocation, SpawnRotation);
+		// if (Black)
+			// World->SpawnActor<APlayerProjectile>(ProjectileBlack, SpawnLocation, SpawnRotation);
+		// else
+			// World->SpawnActor<APlayerProjectile>(ProjectileWhite, SpawnLocation, SpawnRotation);
 	}
 	else
 		UE_LOG(LogTemp, Warning, TEXT("Proyectil sin asignar en el blueprint del jugador"));
@@ -66,5 +74,7 @@ void UPlayerComponent::OnInvert()
 				}
 			}
 		}
+
+		Black = !Black;
 	}
 }

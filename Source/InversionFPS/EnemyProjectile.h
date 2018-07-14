@@ -32,4 +32,6 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, Category = EnemyConfig)
 		bool Black;
+
+	AActor* Player;
 };

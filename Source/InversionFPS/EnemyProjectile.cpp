@@ -1,6 +1,8 @@
 
 #include "EnemyProjectile.h"
 #include "InversionFPSCharacter.h"
+#include "Runtime/CoreUObject/Public/UObject/UObjectIterator.h"
+#include "PlayerComponent.h"
 
 AEnemyProjectile::AEnemyProjectile()
 {
@@ -20,6 +22,11 @@ void AEnemyProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemyProjectile::OnOverlap);
+
+	for (TObjectIterator<UPlayerComponent> Itr; Itr; ++Itr)
+	{
+		Player = Itr->GetOwner();
+	}
 }
 
 void AEnemyProjectile::Tick(float DeltaTime)
@@ -35,9 +42,15 @@ void AEnemyProjectile::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	{
 		// UE_LOG(LogTemp, Warning, TEXT("ALGO! %s"), *OtherComp->GetOwner()->GetName());
 
-		if (OtherComp->GetOwner()->GetClass()->IsChildOf<AInversionFPSCharacter>())
+		if (OtherComp->GetOwner() == Player)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Colision con jugador"));
+
+			if (Black != UPlayerComponent::Black)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Dañar jugador"));
+			}
+
 			Destroy();
 		}
 

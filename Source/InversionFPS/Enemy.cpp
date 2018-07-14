@@ -46,10 +46,11 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	for (TObjectIterator<UPlayerComponent> Itr; Itr; ++Itr)
-	{
-		Player = Itr->GetOwner();
-	}
+	// for (TObjectIterator<UPlayerComponent> Itr; Itr; ++Itr)
+	// {
+		// Player = Itr->GetOwner();
+		// UE_LOG(LogTemp, Warning, TEXT("AAAAAAAAAAAA %s"), *Itr->GetOwner()->GetName());
+	// }
 
 	EnemyState = EEnemyState::IDLE;
 }
@@ -62,9 +63,14 @@ void AEnemy::Tick(float DeltaTime)
 
 	if (EnemyState == EEnemyState::IDLE)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Dist: %f"), FVector::Dist(Player->GetActorLocation(), GetActorLocation()));
+		AActor* Player = nullptr;
+		if (UPlayerComponent::Instance != nullptr)
+		{
+			Player = UPlayerComponent::Instance->GetOwner();
+			UE_LOG(LogTemp, Warning, TEXT("Dist: %f"), FVector::Dist(Player->GetActorLocation(), GetActorLocation()));
+		}
 
-		if (Player != NULL && FVector::Dist(Player->GetActorLocation(), GetActorLocation()) < DISTANCE_TO_START)
+		if (Player != nullptr && FVector::Dist(Player->GetActorLocation(), GetActorLocation()) < DISTANCE_TO_START)
 		{
 			timeCounter = 0;
 			EnemyState = EEnemyState::AIM;

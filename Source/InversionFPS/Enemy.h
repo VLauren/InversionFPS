@@ -63,7 +63,5 @@ public:
 
 	float timeCounter;
 
-	AActor* Player;
-
 	bool shoot;
 };
