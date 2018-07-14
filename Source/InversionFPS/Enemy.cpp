@@ -3,6 +3,8 @@
 #include "Enemy.h"
 #include "EnemyProjectile.h"
 #include "Runtime/Engine/Public/EngineUtils.h"
+#include "Runtime/CoreUObject/Public/UObject/UObjectIterator.h"
+#include "PlayerComponent.h"
 
 const float AEnemy::MOVEMENT_SPEED = 200.0f;
 const float AEnemy::DISTANCE_TO_START = 1700.0f;
@@ -44,9 +46,9 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	for (TActorIterator<AInversionFPSCharacter> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	for (TObjectIterator<UPlayerComponent> Itr; Itr; ++Itr)
 	{
-		Player = *ActorItr;
+		Player = Itr->GetOwner();
 	}
 
 	EnemyState = EEnemyState::IDLE;
@@ -60,9 +62,9 @@ void AEnemy::Tick(float DeltaTime)
 
 	if (EnemyState == EEnemyState::IDLE)
 	{
-		// UE_LOG(LogTemp, Warning, TEXT("Dist: %f"), FVector::Dist(Player->GetActorLocation(), GetActorLocation()));
+		UE_LOG(LogTemp, Warning, TEXT("Dist: %f"), FVector::Dist(Player->GetActorLocation(), GetActorLocation()));
 
-		if (FVector::Dist(Player->GetActorLocation(), GetActorLocation()) < DISTANCE_TO_START)
+		if (Player != NULL && FVector::Dist(Player->GetActorLocation(), GetActorLocation()) < DISTANCE_TO_START)
 		{
 			timeCounter = 0;
 			EnemyState = EEnemyState::AIM;

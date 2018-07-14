@@ -22,7 +22,7 @@ public:
 
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 	
-	AInversionFPSCharacter* Player;
+	AActor* Player;
 	
 private:
 	FVector direction;

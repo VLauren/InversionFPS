@@ -2,14 +2,15 @@
 #include "EnemyMovement.h"
 #include "Enemy.h"
 #include "Runtime/Engine/Public/EngineUtils.h"
-#include "InversionFPSCharacter.h"
+#include "Runtime/CoreUObject/Public/UObject/UObjectIterator.h"
+#include "PlayerComponent.h"
 
 void UEnemyMovement::BeginPlay()
 {
 	Super::BeginPlay();
-	for (TActorIterator<AInversionFPSCharacter> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	for (TObjectIterator<UPlayerComponent> Itr; Itr; ++Itr)
 	{
-		Player = *ActorItr;
+		Player = Itr->GetOwner();
 	}
 }
 

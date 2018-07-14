@@ -63,7 +63,7 @@ public:
 
 	float timeCounter;
 
-	AInversionFPSCharacter* Player;
+	AActor* Player;
 
 	bool shoot;
 };
