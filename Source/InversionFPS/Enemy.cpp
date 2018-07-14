@@ -2,6 +2,8 @@
 
 #include "Enemy.h"
 
+const float AEnemy::MOVEMENT_SPEED = 200.0f;
+
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -39,7 +41,7 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
-	EnemyState = EEnemyState::AIM;
+	EnemyState = EEnemyState::MOVE_FORWARD;
 }
 
 // Called every frame

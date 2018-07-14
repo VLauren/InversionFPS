@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "Enemy.h"
 #include "InversionFPSCharacter.h"
 #include "CoreMinimal.h"
 #include "GameFramework/PawnMovementComponent.h"
@@ -25,4 +24,6 @@ public:
 	
 	AInversionFPSCharacter* Player;
 	
+private:
+	FVector direction;
 };

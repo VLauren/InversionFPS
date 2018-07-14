@@ -146,10 +146,17 @@ void AInversionFPSCharacter::OnFire()
 	{
 		for (TObjectIterator<UMeshComponent> Itr; Itr; ++Itr)
 		{
-			if (Itr->GetMaterial(0) == AReferences::Instance->MatWhite)
-				Itr->SetMaterial(0, AReferences::Instance->MatBlack);
-			else if (Itr->GetMaterial(0) == AReferences::Instance->MatBlack)
-				Itr->SetMaterial(0, AReferences::Instance->MatWhite);
+			TArray<UMaterialInterface*> arr = Itr->GetMaterials();
+			for (int i = 0; i < 2; i++)
+			{
+				if (Itr->GetMaterial(i))
+				{
+					if (Itr->GetMaterial(i) == AReferences::Instance->MatWhite)
+						Itr->SetMaterial(i, AReferences::Instance->MatBlack);
+					else if (Itr->GetMaterial(i) == AReferences::Instance->MatBlack)
+						Itr->SetMaterial(i, AReferences::Instance->MatWhite);
+				}
+			}
 		}
 	}
 

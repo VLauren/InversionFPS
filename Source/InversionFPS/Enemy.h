@@ -12,7 +12,9 @@
 UENUM()
 enum class EEnemyState : uint8
 {
-	MOVE,
+	MOVE_RIGHT,
+	MOVE_LEFT,
+	MOVE_FORWARD,
 	AIM,
 	SHOOT
 };
@@ -41,7 +43,9 @@ public:
 		USkeletalMeshComponent* Mesh = nullptr;
 	
 	UPROPERTY(VisibleAnywhere)
-		UEnemyMovement* Movement;
+		class UEnemyMovement* Movement;
 	
 	EEnemyState EnemyState;
+
+	static const float MOVEMENT_SPEED;
 };
