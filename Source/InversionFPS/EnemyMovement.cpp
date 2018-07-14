@@ -20,6 +20,8 @@ void UEnemyMovement::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	AEnemy* Enemy;
 	Enemy = (AEnemy*)GetOwner();
 
+	if (Enemy->EnemyState == EEnemyState::IDLE)
+		direction = FVector::ZeroVector;
 	if (Enemy->EnemyState == EEnemyState::AIM)
 	{
 		float NewYaw = (Player->GetActorLocation() - GetActorLocation()).Rotation().Yaw;

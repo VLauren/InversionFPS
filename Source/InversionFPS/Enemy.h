@@ -12,6 +12,7 @@
 UENUM()
 enum class EEnemyState : uint8
 {
+	IDLE,
 	MOVE_RIGHT,
 	MOVE_LEFT,
 	MOVE_FORWARD,
@@ -48,4 +49,10 @@ public:
 	EEnemyState EnemyState;
 
 	static const float MOVEMENT_SPEED;
+	static const float DISTANCE_TO_START;
+	static const float MOVE_TIME;
+
+	float timeCounter;
+
+	AInversionFPSCharacter* Player;
 };
