@@ -63,5 +63,6 @@ public:
 
 	float timeCounter;
 
-	bool shoot;
+	UPROPERTY(BlueprintReadWrite)
+		bool shoot;
 };
