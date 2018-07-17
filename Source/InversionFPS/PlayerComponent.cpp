@@ -5,9 +5,11 @@
 #include "Runtime/Engine/Classes/Components/MeshComponent.h"
 #include "Runtime/Engine/Classes/GameFramework/Pawn.h"
 #include "PlayerProjectile.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 bool UPlayerComponent::Black = false;
 UPlayerComponent* UPlayerComponent::Instance = nullptr;
+int UPlayerComponent::Health = 100;
 
 UPlayerComponent::UPlayerComponent()
 {
@@ -27,6 +29,7 @@ void UPlayerComponent::BeginPlay()
 	if (InputComponent != NULL)
 	{
 		InputComponent->BindAction("Fire", IE_Pressed, this, &UPlayerComponent::OnFire);
+		InputComponent->BindAction("Fire", IE_Released, this, &UPlayerComponent::OnReleaseFire);
 		InputComponent->BindAction("Invert", IE_Pressed, this, &UPlayerComponent::OnInvert);
 	}
 }
@@ -35,25 +38,60 @@ void UPlayerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+
+	if (shootPressed)
+	{
+		if (shootFrameCount <= 0)
+		{
+			UWorld* const World = GetWorld();
+			if (World != NULL && ProjectileBlack != nullptr && ProjectileWhite != nullptr)
+			{
+				// World->SpawnActor<APlayerProjectile>(Projectile, GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation());
+
+				const FRotator SpawnRotation = ((APawn*)GetOwner())->GetControlRotation();
+				const FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
+
+				if (Black)
+					World->SpawnActor<APlayerProjectile>(ProjectileBlack, SpawnLocation, SpawnRotation);
+				else
+					World->SpawnActor<APlayerProjectile>(ProjectileWhite, SpawnLocation, SpawnRotation);
+
+				shootFrameCount = 5;
+			}
+			else
+				UE_LOG(LogTemp, Warning, TEXT("Proyectil sin asignar en el blueprint del jugador"));
+		}
+		else
+			shootFrameCount--;
+	}
 }
 
 void UPlayerComponent::OnFire()
 {
-	UWorld* const World = GetWorld();
-	if (World != NULL && ProjectileBlack != nullptr && ProjectileWhite != nullptr)
-	{
+	// UWorld* const World = GetWorld();
+	// if (World != NULL && ProjectileBlack != nullptr && ProjectileWhite != nullptr)
+	// {
 		// World->SpawnActor<APlayerProjectile>(Projectile, GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation());
 
-		const FRotator SpawnRotation = ((APawn*)GetOwner())->GetControlRotation();
-		const FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
+		// const FRotator SpawnRotation = ((APawn*)GetOwner())->GetControlRotation();
+		// const FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
 
-		if (Black)
-			World->SpawnActor<APlayerProjectile>(ProjectileBlack, SpawnLocation, SpawnRotation);
-		else
-			World->SpawnActor<APlayerProjectile>(ProjectileWhite, SpawnLocation, SpawnRotation);
-	}
-	else
-		UE_LOG(LogTemp, Warning, TEXT("Proyectil sin asignar en el blueprint del jugador"));
+		// if (Black)
+			// World->SpawnActor<APlayerProjectile>(ProjectileBlack, SpawnLocation, SpawnRotation);
+		// else
+			// World->SpawnActor<APlayerProjectile>(ProjectileWhite, SpawnLocation, SpawnRotation);
+
+		// shootFrameCount = 15;
+	// }
+	// else
+		// UE_LOG(LogTemp, Warning, TEXT("Proyectil sin asignar en el blueprint del jugador"));
+	
+	shootPressed = true;
+}
+
+void UPlayerComponent::OnReleaseFire()
+{
+	shootPressed = false;
 }
 
 void UPlayerComponent::OnInvert()
@@ -76,5 +114,19 @@ void UPlayerComponent::OnInvert()
 		}
 
 		Black = !Black;
+	}
+}
+
+
+void UPlayerComponent::ApplyDamage(int amount)
+{
+	Health -= amount;
+
+	UE_LOG(LogTemp, Warning, TEXT("vida: %d"), Health);
+
+	if (Health <= 0)
+	{
+		// Health = 100;
+		UGameplayStatics::OpenLevel(this, TEXT("/Game/FirstPersonCPP/Maps/Level0"));
 	}
 }

@@ -8,10 +8,11 @@
 void UEnemyMovement::BeginPlay()
 {
 	Super::BeginPlay();
-	for (TObjectIterator<UPlayerComponent> Itr; Itr; ++Itr)
-	{
-		Player = Itr->GetOwner();
-	}
+	// for (TObjectIterator<UPlayerComponent> Itr; Itr; ++Itr)
+	// {
+		// Player = Itr->GetOwner();
+	// }
+	Player = UPlayerComponent::Instance->GetOwner();
 }
 
 void UEnemyMovement::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)

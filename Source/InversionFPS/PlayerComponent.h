@@ -35,10 +35,19 @@ public:
 		FVector GunOffset;
 
 	void OnFire();
+	void OnReleaseFire();
 	void OnInvert();
+
+	void ApplyDamage(int amount);
 
 	static bool Black;
 
 	static UPlayerComponent* Instance;
-	
+
+	static int Health;
+
+private:
+
+	int shootFrameCount;
+	bool shootPressed;
 };

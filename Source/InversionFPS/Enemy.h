@@ -65,4 +65,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 		bool shoot;
+
+	void Death();
+
+	void ApplyDamage(int damage);
+
+	int Health;
 };

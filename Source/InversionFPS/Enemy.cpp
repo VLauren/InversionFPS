@@ -53,6 +53,8 @@ void AEnemy::BeginPlay()
 	// }
 
 	EnemyState = EEnemyState::IDLE;
+
+	Health = 100;
 }
 
 // Called every frame
@@ -67,7 +69,7 @@ void AEnemy::Tick(float DeltaTime)
 		if (UPlayerComponent::Instance != nullptr)
 		{
 			Player = UPlayerComponent::Instance->GetOwner();
-			UE_LOG(LogTemp, Warning, TEXT("Dist: %f"), FVector::Dist(Player->GetActorLocation(), GetActorLocation()));
+			// UE_LOG(LogTemp, Warning, TEXT("Dist: %f"), FVector::Dist(Player->GetActorLocation(), GetActorLocation()));
 		}
 
 		if (Player != nullptr && FVector::Dist(Player->GetActorLocation(), GetActorLocation()) < DISTANCE_TO_START)
@@ -120,3 +122,17 @@ void AEnemy::GenerateShoot(FVector Location, FRotator Rotation)
 	else
 		UE_LOG(LogTemp, Warning, TEXT("Proyectil sin asignar en el blueprint del enemigo"));
 }
+
+void AEnemy::ApplyDamage(int damage)
+{
+	Health -= damage;
+	if (Health <= 0)
+		Death();
+}
+
+void AEnemy::Death()
+{
+	Destroy();
+}
+
+

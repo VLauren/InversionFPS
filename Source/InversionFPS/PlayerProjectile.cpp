@@ -37,15 +37,16 @@ void APlayerProjectile::OnOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 
 		if (OtherComp->GetOwner()->GetClass()->IsChildOf<AEnemy>())
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Colision con enemigo"));
+			// UE_LOG(LogTemp, Warning, TEXT("Colision con enemigo"));
 
 			AEnemy* Enemy = (AEnemy*)OtherComp->GetOwner();
 			if (Enemy->Black != Black)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Dañar enemigo mas"));
+				// UE_LOG(LogTemp, Warning, TEXT("Dañar enemigo mas"));
+				Enemy->ApplyDamage(5);
 			}
-			else
-				UE_LOG(LogTemp, Warning, TEXT("Dañar enemigo algo"));
+			// else
+				// UE_LOG(LogTemp, Warning, TEXT("Dañar enemigo algo"));
 
 			Destroy();
 		}

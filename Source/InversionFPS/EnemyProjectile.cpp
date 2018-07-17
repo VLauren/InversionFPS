@@ -44,11 +44,12 @@ void AEnemyProjectile::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 
 		if (OtherComp->GetOwner() == Player)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Colision con jugador"));
+			// UE_LOG(LogTemp, Warning, TEXT("Colision con jugador"));
 
 			if (Black != UPlayerComponent::Black)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Dañar jugador"));
+				// UE_LOG(LogTemp, Warning, TEXT("Dañar jugador"));
+				UPlayerComponent::Instance->ApplyDamage(25);
 			}
 
 			Destroy();
